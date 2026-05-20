@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KELURAHAN GUNUNG TINGGI</title>
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f1f5ff;
+}
+
+/* HEADER */
+
+header{
+    background:linear-gradient(90deg,#004aad,#0077ff);
+    color:white;
+    padding:15px 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    overflow:hidden;
+}
+
+.running-text{
+    width:100%;
+    overflow:hidden;
+    white-space:nowrap;
+}
+
+.running-text h1{
+    display:inline-block;
+    padding-left:100%;
+    animation:jalan 13s linear infinite;
+    font-size:30px;
+}
+
+@keyframes jalan{
+    0%{
+        transform:translateX(0);
+    }
+    100%{
+        transform:translateX(-200%);
+    }
+}
+
+/* LOGIN */
+
+.login-btn{
+    background:white;
+    color:#004aad;
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    cursor:pointer;
+    font-weight:bold;
+}
+
+/* CONTAINER */
+
+.container{
+    width:90%;
+    max-width:700px;
+    margin:40px auto;
+    background:white;
+    padding:30px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.container h2{
+    text-align:center;
+    color:#004aad;
+    margin-bottom:20px;
+}
+
+input,
+textarea,
+select{
+    width:100%;
+    padding:12px;
+    margin-top:15px;
+    border-radius:10px;
+    border:1px solid #ccc;
+    font-size:16px;
+}
+
+textarea{
+    resize:none;
+    height:120px;
+}
+
+/* BINTANG */
+
+.rating{
+    margin-top:20px;
+    text-align:center;
+    font-size:45px;
+}
+
+.rating span{
+    cursor:pointer;
+    color:#ccc;
+    transition:0.3s;
+}
+
+.rating span.active{
+    color:gold;
+    text-shadow:0 0 10px orange;
+}
+
+/* BUTTON */
+
+.kirim{
+    width:100%;
+    margin-top:20px;
+    padding:12px;
+    background:#004aad;
+    color:white;
+    border:none;
+    border-radius:10px;
+    font-size:17px;
+    cursor:pointer;
+}
+
+.kirim:hover{
+    background:#00337a;
+}
+
+/* ADMIN */
+
+.admin-panel{
+    display:none;
+    width:95%;
+    margin:30px auto;
+    background:white;
+    padding:20px;
+    border-radius:15px;
+    box-shadow:0 5px 15px rgba(0,0,0,0.1);
+}
+
+.admin-panel h2{
+    text-align:center;
+    margin-bottom:20px;
+    color:#004aad;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+}
+
+table th,
+table td{
+    border:1px solid #ddd;
+    padding:12px;
+    text-align:center;
+}
+
+table th{
+    background:#004aad;
+    color:white;
+}
+
+.hapus{
+    background:red;
+    color:white;
+    border:none;
+    padding:7px 10px;
+    border-radius:7px;
+    cursor:pointer;
+}
+
+/* MODAL LOGIN */
+
+.modal{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,0.5);
+    justify-content:center;
+    align-items:center;
+}
+
+.modal-content{
+    background:white;
+    padding:30px;
+    width:320px;
+    border-radius:15px;
+    position:relative;
+}
+
+.close{
+    position:absolute;
+    right:15px;
+    top:10px;
+    font-size:22px;
+    color:red;
+    cursor:pointer;
+}
+
+.welcome{
+    text-align:center;
+    margin-top:25px;
+    font-size:20px;
+    color:#333;
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+<div class="running-text">
+<h1>
+SELAMAT DATANG DI WEBSITE KRITIK DAN SARAN KELURAHAN GUNUNG TINGGI
+</h1>
+</div>
+
+<button class="login-btn" onclick="openLogin()">
+Login Admin
+</button>
+
+</header>
+
+<div class="welcome">
+Silakan berikan kritik dan saran Anda 😊
+</div>
+
+<!-- FORM -->
+
+<div class="container">
+
+<h2>Form Kritik & Saran</h2>
+
+<input type="text" id="nama" placeholder="Masukkan Nama">
+
+<select id="jenis">
+<option value="Kritik">Kritik</option>
+<option value="Saran">Saran</option>
+</select>
+
+<textarea id="pesan" placeholder="Tulis kritik atau saran"></textarea>
+
+<!-- RATING -->
+<div class="rating">
+<span onclick="setRating(1)" id="star1">★</span>
+<span onclick="setRating(2)" id="star2">★</span>
+<span onclick="setRating(3)" id="star3">★</span>
+<span onclick="setRating(4)" id="star4">★</span>
+<span onclick="setRating(5)" id="star5">★</span>
+</div>
+
+<button class="kirim" onclick="kirimData()">
+Kirim
+</button>
+
+</div>
+
+<!-- ADMIN PANEL -->
+
+<div class="admin-panel" id="adminPanel">
+
+<h2>Data Kritik & Saran</h2>
+
+<table>
+
+<thead>
+<tr>
+<th>No</th>
+<th>Nama</th>
+<th>Jenis</th>
+<th>Pesan</th>
+<th>Rating</th>
+<th>Aksi</th>
+</tr>
+</thead>
+
+<tbody id="dataTable"></tbody>
+
+</table>
+
+</div>
+
+<!-- LOGIN -->
+
+<div class="modal" id="loginModal">
+
+<div class="modal-content">
+
+<span class="close" onclick="closeLogin()">✖</span>
+
+<h2 style="text-align:center;color:#004aad;">
+Login Admin
+</h2>
+
+<input type="text" id="username" placeholder="Username">
+
+<input type="password" id="password" placeholder="Password">
+
+<button class="kirim" onclick="loginAdmin()">
+Login
+</button>
+
+</div>
+
+</div>
+
+<script>
+
+let dataMasuk = [];
+let nilaiBintang = 0;
+
+/* RATING */
+
+function setRating(rating){
+
+    nilaiBintang = rating;
+
+    for(let i = 1; i <= 5; i++){
+        document
+        .getElementById("star"+i)
+        .classList.remove("active");
+    }
+
+    for(let i = 1; i <= rating; i++){
+        document
+        .getElementById("star"+i)
+        .classList.add("active");
+    }
+}
+
+/* KIRIM DATA */
+
+function kirimData(){
+
+    let nama = document.getElementById("nama").value;
+    let jenis = document.getElementById("jenis").value;
+    let pesan = document.getElementById("pesan").value;
+
+    if(nama === "" || pesan === ""){
+        alert("Nama dan pesan wajib diisi!");
+        return;
+    }
+
+    if(nilaiBintang === 0){
+        alert("Silakan pilih rating bintang!");
+        return;
+    }
+
+    let bintang = "";
+
+    for(let i = 0; i < nilaiBintang; i++){
+        bintang += "⭐";
+    }
+
+    let data = {
+        nama,
+        jenis,
+        pesan,
+        bintang
+    };
+
+    dataMasuk.push(data);
+
+    tampilkanData();
+
+    alert("Terima kasih, data berhasil dikirim 😊");
+
+    document.getElementById("nama").value = "";
+    document.getElementById("pesan").value = "";
+
+    nilaiBintang = 0;
+
+    for(let i = 1; i <= 5; i++){
+        document
+        .getElementById("star"+i)
+        .classList.remove("active");
+    }
+}
+
+/* TAMPILKAN DATA */
+
+function tampilkanData(){
+
+    let table = document.getElementById("dataTable");
+
+    table.innerHTML = "";
+
+    dataMasuk.forEach((item,index)=>{
+
+        table.innerHTML += `
+        <tr>
+            <td>${index+1}</td>
+            <td>${item.nama}</td>
+            <td>${item.jenis}</td>
+            <td>${item.pesan}</td>
+            <td>${item.bintang}</td>
+            <td>
+                <button class="hapus"
+                onclick="hapusData(${index})">
+                Hapus
+                </button>
+            </td>
+        </tr>
+        `;
+    });
+}
+
+/* HAPUS */
+
+function hapusData(index){
+
+    if(confirm("Yakin ingin menghapus data?")){
+
+        dataMasuk.splice(index,1);
+
+        tampilkanData();
+    }
+}
+
+/* LOGIN */
+
+function openLogin(){
+    document.getElementById("loginModal").style.display = "flex";
+}
+
+function closeLogin(){
+    document.getElementById("loginModal").style.display = "none";
+}
+
+function loginAdmin(){
+
+    let user = document.getElementById("username").value;
+    let pass = document.getElementById("password").value;
+
+    if(user === "12345" && pass === "12345"){
+
+        alert("Login berhasil 😊");
+
+        document.getElementById("adminPanel").style.display = "block";
+
+        closeLogin();
+
+    }else{
+
+        alert("Username atau Password salah!");
+    }
+}
+
+</script>
+
+</body>
+</html>
